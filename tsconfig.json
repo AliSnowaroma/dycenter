@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "resolveJsonModule": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "global.d.ts"
+    ],
+    "paths":{
+      "@/core/*": ["./src/core/*"],
+      "@/controllers/*": ["./src/controllers/*"],
+      "@/features/*": ["./src/features/*"],
+      "@/config/env": ["./src/config/env"],
+      "@/utils": ["./src/utils"],
+      "@/constants": ["./src/constants"],
+      "@/common": ["./src/common"],
+      "@/*": ["./src/*"]
+    },
+  },
+  "include": [
+    "src/**/*",
+    "node_modules/@types",
+    "global.d.ts",
+  ],
+  "exclude": ["node_modules", "build"],
+}
