@@ -1,4 +1,10 @@
-const allowlist = ['http://localhost:9999', 'http://127.0.0.1:9999', 'http://127.0.0.1:3533', 'http://www.pgting.com'];
+const allowlist = [
+  'http://localhost:9999',
+  'http://127.0.0.1:9999',
+  'http://127.0.0.1:3533',
+  'http://www.pgting.com',
+  'http://120.27.151.113'
+];
 
 const corsOptionsDelegate = (req: any, callback) => {
 
