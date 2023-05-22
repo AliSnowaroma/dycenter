@@ -44,7 +44,7 @@ class UserController {
     await this.userService.getUserByUsernameOrEmail({username})
     // await this.userService.getUserByUsernameOrEmail({email})
     const cacheCode = await uRedis.getRedisSync(`${email}`)
-    if(code !== cacheCode){
+    if(code === cacheCode){
       await uRedis.delRedis(email)
       try {
         const res = await this.userService.register({email, password, username})
@@ -127,6 +127,22 @@ class UserController {
 
   }
 
+  @Post('/logout')
+  @HttpCode(200)
+  async logout (@Request() req): Promise<any> {
+    const oldToken = req.headers['x-pg-token']
+
+    try{
+      await uRedis.delRedis(oldToken)
+      return {
+        message: '已退出登录'
+      }
+    } catch(err){
+      throw new InternalServerErrorException(err)
+    }
+
+  }
+
   /**
    * @description 修改密码
    * @returns {Promise<string>}
@@ -137,7 +153,7 @@ class UserController {
   async resetPassword (@Body() post: DUpdatePassword): Promise<any> {
     const { email, code, password } = post
     const cacheCode = await uRedis.getRedisSync(`${email}`)
-    if(code !== cacheCode){
+    if(code === cacheCode){
       await uRedis.delRedis(email)
       try {
         await this.userService.resetPassword({email, password})

@@ -64,12 +64,6 @@ async function bootstrap() {
   const { mysqlConfig } = config
   uLogger.logger.info(`Node(${mysqlConfig.port}):连接成功`)
 
-  // const connect = await getconnection()
-  // console.log(connect)
-
-  // const options  = await getConnectionOptions()
-
-  // console.log('lllll', options)
 }
 
 // connectDB()

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository, getConnection, SelectQueryBuilder, Entity} from 'typeorm'
 import { Material } from '@/entities/Material'
@@ -17,7 +17,11 @@ export default class MaterialService {
   ){
   }
 
-  async add(comInfo: AddMaterial){
+  async add(comInfo: AddMaterial, userId: number){
+    const queryRes = await this.getMaterialList(userId)
+    if(queryRes.length >= 10){
+      throw new InternalServerErrorException('普通会员最多添加10条')
+    }
     let { panel, code, dataValues, ...rest } = comInfo
     const data = {
       ...rest,
@@ -39,24 +43,48 @@ export default class MaterialService {
         }
       }
     }
-    const res = this.materialRepository.insert(data)
+    const user = new User()
+    user.userId = userId
+
+    const material = this.materialRepository.create(data)
+    material.user = user
+    const res = this.materialRepository.insert(material)
     return res
   }
 
-  async getMaterialList(status?: string){
+  async getMaterialList(userId, status?: string){
     const res = status
     ? await this.materialRepository.createQueryBuilder('material')
     .select()
-    .where(`material.status = :status`, {status: status})
+    .where('material.creator = :userId', {userId: userId})
+    .andWhere(`material.status = :status`, {status: status})
+    .orderBy('material.updateTime', 'DESC')
     .getMany()
 
     : await this.materialRepository.createQueryBuilder()
-    .select('Material')
+    .select('Material') // 这里传入实体名，指的是选择所有的列
+    .where('material.creator = :userId', {userId: userId})
+    .orderBy('material.updateTime', 'DESC')
     .getMany()
 
     // const data = await this.materialRepository.findAndCount();
     return res
   }
+
+
+  async getCommonMaterialList(){
+    const status = "1";
+    const res = await this.materialRepository.createQueryBuilder('material')
+    .select()
+    .where(`material.status = :status`, {status: status})
+    .andWhere(`material.isPublic = 1`)
+    .orderBy('material.type')
+    .getMany()
+
+    // const data = await this.materialRepository.findAndCount();
+    return res
+  }
+
 
   // async getDraftMaterialList(){
   //   const res = await this.materialRepository.createQueryBuilder()
@@ -81,24 +109,33 @@ export default class MaterialService {
   async updateMaterial (comInfo, userId){
     const { id, ...rest } = comInfo
 
-    // 设置默认值
-    rest.panel = rest.panel ? rest.panel : {
-      infoConfig: {
-        values: {},
-        formItems: []
-      },
-      eventConfig: {
-        values: {},
-        formItems: []
+    if(rest.panel !== undefined){
+      // 设置默认值
+      rest.panel = rest.panel ? rest.panel : {
+        infoConfig: {
+          values: {},
+          formItems: []
+        },
+        eventConfig: {
+          values: {},
+          formItems: []
+        }
       }
     }
 
-    rest.dataValues = rest.dataValues ? rest.dataValues: {
-      isOrigin: '0'
-    };
+    if(rest.dataValues !== undefined){
+      // 设置默认值
+      rest.dataValues = rest.dataValues ? rest.dataValues: {
+        isOrigin: '0'
+      };
+    }
+
+
+
 
     const material = this.materialRepository.merge(new Material(), rest)
     material.id=id
+    material.status = '0'
 
     const res = await this.materialRepository.save(material)
 
@@ -134,7 +171,7 @@ export default class MaterialService {
   }
 
   async deleteMaterialById (id: string) {
-    const data = this.materialRepository.delete(id);
+    const data = await this.materialRepository.delete(id);
     return data
   }
 

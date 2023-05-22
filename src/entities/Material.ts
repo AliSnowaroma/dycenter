@@ -32,7 +32,15 @@ enum MaterialTypes {
 enum MaterialStatus {
   '编辑中' = "0",
   '已发布' = "1",
-  '已删除'= "2",
+  '审核中' = "2",
+  '已删除'= "3",
+}
+
+enum RoleLevel {
+  '普通会员' = "0",
+  '银卡会员' = "1",
+  '金卡会员' = "2",
+  '尊享会员'= "3",
 }
 
 @Entity()
@@ -40,10 +48,10 @@ export class Material {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({select: false})
   updateTime: Date
 
-  @CreateDateColumn()
+  @CreateDateColumn({select: false})
   createTime: Date
 
   @Column({default: null})
@@ -59,19 +67,25 @@ export class Material {
   isLocalComponent: boolean;
 
   @Column({default: null})
-  localComponentName: string;
+  localComponentPath: string;
 
   @Column({default: false})
-  public: boolean;
+  isPublic: boolean;
 
   @Column({default: null})
-  thumbnail: string;
+  thumb: string;
+
+  @Column({default: null})
+  brief: string;
 
   @Column('enum', { enum: MaterialTypes, default: MaterialTypes['0'] })
   type: string;
 
   @Column('enum', { enum: MaterialStatus, default: MaterialStatus['0'] })
   status: string;
+
+  @Column('enum', { enum: RoleLevel, default: RoleLevel['0'] })
+  roleLevel: string;
 
   @ManyToOne(type => User, user => user.materials, {
     nullable: true

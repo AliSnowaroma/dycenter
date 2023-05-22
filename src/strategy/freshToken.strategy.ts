@@ -10,8 +10,6 @@ export class FreshTokenStrategy implements CanActivate {
   constructor(){}
   async canActivate(context: ExecutionContext): Promise<boolean> {
 
-    console.log('守护路由')
-
     const request = context.switchToHttp().getRequest()
     const headers = request.headers
     const tokenKey = headers['x-pg-token']

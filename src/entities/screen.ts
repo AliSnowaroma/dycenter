@@ -14,19 +14,29 @@ enum ScreenStatus {
   '已删除'= "2",
 }
 
+enum RoleLevel {
+  '普通会员' = "0",
+  '银卡会员' = "1",
+  '金卡会员' = "2",
+  '尊享会员'= "3",
+}
+
 @Entity()
 export class Screen {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({select: false})
   updateTime: Date
 
-  @CreateDateColumn()
+  @CreateDateColumn({select: false})
   createTime: Date
 
   @Column('enum', { enum: ScreenStatus, default: ScreenStatus['0'] })
   status: string;
+
+  @Column('enum', { enum: RoleLevel, default: RoleLevel['0'] })
+  roleLevel: string;
 
   @Column({default: null})
   name: string;
@@ -43,6 +53,8 @@ export class Screen {
   @Column({default: null})
   brief: string;
 
+  @Column({default: false})
+  isPublic: boolean;
 
   @Column('enum', { enum: AutoFitTypes, default: AutoFitTypes['0'] })
   autoFit: string;

@@ -39,10 +39,10 @@ export class ScreenMaterial {
   m_id: string;
 
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({select: false})
   updateTime: Date
 
-  @CreateDateColumn()
+  @CreateDateColumn({select: false})
   createTime: Date
 
   @Column({default: null})

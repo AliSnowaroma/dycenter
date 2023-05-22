@@ -31,24 +31,16 @@ enum OriginEnum {
 class DataValues {
   @IsEnum(OriginEnum)
   isOrigin: OriginEnum;
-
-  @IsString()
-  data?: string;
-
-  @IsString()
-  url?: string;
-
-  @IsString()
-  method?: string;
-
-  @IsNumber()
-  freshTime?: number;
-
-  @IsString()
-  params?: string;
 }
 
 export class AddMaterial {
+
+  m_id?: string;
+
+  sm_id?: string;
+
+  id?: string;
+
   @IsNotEmpty({
     message: '名称不能为空',
   })
@@ -101,11 +93,6 @@ export class QueryId {
 }
 
 export class PublishMaterial {
-  @IsNotEmpty({
-    message: 'version不能为空'
-  })
-  @IsString()
-  version: string
 
   @IsNotEmpty({
     message: '组件id不能为空'

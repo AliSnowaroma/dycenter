@@ -17,7 +17,6 @@ import { AddMaterial, QueryId } from '@/controllers/material/index.dto'
 import { AuthStrategy } from '@/strategy/auth.strategy.redis'
 import { AuthGuard } from '@nestjs/passport';
 
-@UseGuards(AuthStrategy)
 @Controller('material')
 class MaterialController {
   constructor(
@@ -29,11 +28,13 @@ class MaterialController {
       return 'lll'
   }
 
+  @UseGuards(AuthStrategy)
   @Post('/add')
   @HttpCode(200)
-  async add (@Body() post: AddMaterial): Promise<any> {
+  async add (@Body() post: AddMaterial,  @Request() req): Promise<any> {
+    const { userId } = req
     try {
-    const res =  await this.materialService.add(post)
+    const res =  await this.materialService.add(post, userId)
      return {
        message: '组件添加成功'
      }
@@ -42,12 +43,14 @@ class MaterialController {
     }
   }
 
+  @UseGuards(AuthStrategy)
   @Get('/getMaterialList')
   @HttpCode(200)
-  async getMaterialList (@Query() query): Promise<any> {
+  async getMaterialList (@Query() query, @Request() req): Promise<any> {
     const { status } = query
+    const { userId } = req
      try {
-    const res =  await this.materialService.getMaterialList(status)
+    const res =  await this.materialService.getMaterialList(userId, status)
      return {
        materialList: res,
        count: res.length
@@ -58,6 +61,23 @@ class MaterialController {
     }
   }
 
+  @Get('/getCommonMaterialList')
+  @HttpCode(200)
+  async getCommonMaterialList (@Query() query): Promise<any> {
+    const { status } = query
+     try {
+    const res =  await this.materialService.getCommonMaterialList()
+     return {
+       materialList: res,
+       count: res.length
+     }
+    } catch (error) {
+      console.log(error)
+      throw new InternalServerErrorException(error)
+    }
+  }
+
+  @UseGuards(AuthStrategy)
   @Get('/getMaterialById')
   @HttpCode(200)
   async getMaterialById (@Query() query: QueryId): Promise<any> {
@@ -72,7 +92,7 @@ class MaterialController {
     }
   }
 
-
+  @UseGuards(AuthStrategy)
   @Post('/publishMaterial')
   @HttpCode(200)
   async publishMaterial (@Body() post: DyObj, @Request() req): Promise<any> {
@@ -87,6 +107,7 @@ class MaterialController {
     }
   }
 
+  @UseGuards(AuthStrategy)
   @Post('/updateMaterial')
   @HttpCode(200)
   async update (@Body() post: DyObj, @Request() req): Promise<any> {
@@ -94,13 +115,14 @@ class MaterialController {
     try {
     const res =  await this.materialService.updateMaterial(post, userId)
      return {
-       message: '组件保存成功'
+       message: '更新成功'
      }
     } catch (error) {
       throw new InternalServerErrorException(error)
     }
   }
 
+  @UseGuards(AuthStrategy)
   @Get('/deleteMaterialById')
   @HttpCode(200)
   async deleteMaterialById (@Query() query: QueryId): Promise<any> {
