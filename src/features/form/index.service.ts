@@ -4,6 +4,7 @@ import { Repository, getConnection, SelectQueryBuilder, Entity} from 'typeorm'
 import { Form } from '@/entities/form'
 import { User } from '@/entities/User'
 import { AddForm } from '@/controllers/form/index.dto'
+import { whiteUserList } from '@/constants/whiteUser'
 
 @Injectable()
 export default class FormService {
@@ -19,7 +20,7 @@ export default class FormService {
 
   async add(formInfo: AddForm, userId: number){
     const queryRes = await this.getFormList(userId)
-    if(queryRes.length >= 10){
+    if(queryRes.length >= 10 && !whiteUserList.includes(userId)){
       throw new InternalServerErrorException('普通会员最多添加10条')
     }
 

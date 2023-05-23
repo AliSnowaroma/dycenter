@@ -4,6 +4,7 @@ import { Repository, getConnection, SelectQueryBuilder, Entity} from 'typeorm'
 import { Material } from '@/entities/Material'
 import { User } from '@/entities/User'
 import { AddMaterial } from '@/controllers/material/index.dto'
+import { whiteUserList } from '@/constants/whiteUser'
 
 @Injectable()
 export default class MaterialService {
@@ -19,7 +20,7 @@ export default class MaterialService {
 
   async add(comInfo: AddMaterial, userId: number){
     const queryRes = await this.getMaterialList(userId)
-    if(queryRes.length >= 10){
+    if(queryRes.length >= 10 && !whiteUserList.includes(userId)){
       throw new InternalServerErrorException('普通会员最多添加10条')
     }
     let { panel, code, dataValues, ...rest } = comInfo
@@ -29,7 +30,7 @@ export default class MaterialService {
         isOrigin: '0'
       },
       code: code ? code : {
-        js: `import React from 'react'\n// import { Button } from 'antd' //使用antd时引入\n// import { Chart, Interval, Tooltip, getTheme } from 'bizcharts'; // 使用bizcharts时引入\nimport './index.scss'\n\n/**\n * @param props \n * data 组件数据\n * width height 组件宽高\n * configValues 动态配置json\n */\nexport default function App(props) {\n  const { data, width, height, configValues } = props\n  return (\n    <div>\n      jsx模板\n    </div>\n  )\n}\n`,
+        js: `import React from 'react'\n// import { Button } from 'antd' //使用antd时引入\n// import { Chart, Interval, Tooltip, getTheme } from 'bizcharts'; // 使用bizcharts时引入\nimport './index.scss'\n\n/**\n * @param props \n * data 组件数据\n * width height 组件宽高\n * infoValues 动态配置json\n */\nexport default function App(props) {\n  const { data, width, height, infoValues } = props\n  return (\n    <div>\n      jsx模板\n    </div>\n  )\n}\n`,
         css: `/**\n* 支持scss\n* 样式文件已进行沙箱隔离\n*/`
       },
       panel: panel ? panel : {

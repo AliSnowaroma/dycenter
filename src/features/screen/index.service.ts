@@ -9,6 +9,7 @@ import { AddScreen, QueryId, UpdateScreen } from '@/controllers/screen/index.dto
 import { User } from '@/entities/User'
 import { ScreenMaterial } from '@/entities/screenMaterial'
 import { getManager } from "typeorm";
+import { whiteUserList } from '@/constants/whiteUser'
 
 @Injectable()
 export default class ScreenService {
@@ -25,7 +26,7 @@ export default class ScreenService {
 
   async add(screen: AddScreen, userId: number){
     const queryRes = await this.getScreenList(null, userId)
-    if(queryRes.screenList.length >= 10){
+    if(queryRes.screenList.length >= 10 && !whiteUserList.includes(userId)){
       throw new InternalServerErrorException('普通会员最多添加10条')
     }
     const user = new User()

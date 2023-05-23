@@ -3,6 +3,7 @@ const allowlist = [
   'http://127.0.0.1:9999',
   'http://127.0.0.1:3000',
   'http://127.0.0.1:3533',
+  'https://www.pgting.com',
   'http://www.pgting.com',
   'http://120.27.151.113',
   'http://localhost:3000'
