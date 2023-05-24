@@ -88,9 +88,9 @@ export default class UserService {
    * @returns {Promise<IResUser>}
    * @memberof UserService
    */
-  async getUserById (id: number): Promise<any> {
+  async getUserById (useId: number): Promise<any> {
     const res = await this.userRepository.findOneBy({
-      id
+      useId
     })
     return res
   }

@@ -27,11 +27,6 @@ class UserController {
     private readonly jwtService: JwtService
   ){}
 
-  @Get('/id')
-  getUser(): string{
-      return 'lll'
-  }
-
   /**
    * @description 注册
    * @returns {Promise<string>}
@@ -172,13 +167,30 @@ class UserController {
   }
 
   /**
+   * 判断登录状态
+   */
+  @UseGuards(AuthStrategy)
+  @Get('getLoginStatus')
+  @HttpCode(200)
+  async getLoginStatus (): Promise<any> {
+    try {
+      return {
+        status: true
+      }
+    } catch (error) {
+      throw new InternalServerErrorException(error)
+    }
+  }
+
+  /**
    *
    */
   @Get('/1.0/getUserById')
   @HttpCode(200)
-  async getUserById (): Promise<any> {
+  async getUserById (@Query() query): Promise<any> {
+    const { useId } = query
     try {
-      const res = this.userService.getUserById(1)
+      const res = this.userService.getUserById(useId)
       return res
     } catch (error) {
       throw new InternalServerErrorException(error)

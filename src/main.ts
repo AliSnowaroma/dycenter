@@ -32,7 +32,7 @@ async function bootstrap() {
 
 
   app.useStaticAssets('public', {
-    prefix: ''
+    prefix: '/dycenter'
   })
 
   app.use(getUser)
