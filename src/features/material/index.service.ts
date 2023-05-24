@@ -5,6 +5,7 @@ import { Material } from '@/entities/Material'
 import { User } from '@/entities/User'
 import { AddMaterial } from '@/controllers/material/index.dto'
 import { whiteUserList } from '@/constants/whiteUser'
+import { format } from 'path'
 
 @Injectable()
 export default class MaterialService {
@@ -62,8 +63,8 @@ export default class MaterialService {
     .orderBy('material.updateTime', 'DESC')
     .getMany()
 
-    : await this.materialRepository.createQueryBuilder()
-    .select('Material') // 这里传入实体名，指的是选择所有的列
+    : await this.materialRepository.createQueryBuilder('material')
+    .select()
     .where('material.creator = :userId', {userId: userId})
     .orderBy('material.updateTime', 'DESC')
     .getMany()
@@ -85,17 +86,6 @@ export default class MaterialService {
     // const data = await this.materialRepository.findAndCount();
     return res
   }
-
-
-  // async getDraftMaterialList(){
-  //   const res = await this.materialRepository.createQueryBuilder()
-  //   .select('Material')
-  //   .innerJoinAndSelect('Material.children', 'vmaterial')
-  //   .getMany()
-
-  //   // const data = await this.materialRepository.findAndCount();
-  //   return res
-  // }
 
   async getMaterialById (id: string){
     const data = this.materialRepository.findOneOrFail({

@@ -46,8 +46,8 @@ export default class FormService {
     .orderBy('form.updateTime', 'DESC')
     .getMany()
 
-    : await this.formRepository.createQueryBuilder()
-    .select('Form')
+    : await this.formRepository.createQueryBuilder('form')
+    .select()
     .where('form.creator = :userId', {userId: userId})
     .orderBy('form.updateTime', 'DESC')
     .getMany()
