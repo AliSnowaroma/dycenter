@@ -36,7 +36,8 @@ class MaterialController {
     try {
     const res =  await this.materialService.add(post, userId)
      return {
-       message: '组件添加成功'
+       message: '组件添加成功',
+       material: res.identifiers[0]
      }
     } catch (error) {
       throw new InternalServerErrorException(error)

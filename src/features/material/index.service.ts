@@ -125,6 +125,16 @@ export default class MaterialService {
 
 
     const material = this.materialRepository.merge(new Material(), rest)
+    try{
+      const findRes = await this.materialRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      })
+    } catch(err){
+      throw new InternalServerErrorException("组件id不存在")
+    }
+
     material.id=id
     material.status = '0'
 

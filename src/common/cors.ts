@@ -6,7 +6,8 @@ const allowlist = [
   'https://www.pgting.com',
   'http://www.pgting.com',
   'http://120.27.151.113',
-  'http://localhost:3000'
+  'http://localhost:3000',
+  'http://localhost'
 ];
 
 const corsOptionsDelegate = (req: any, callback) => {
