@@ -32,9 +32,18 @@ export default class ScreenService {
     const user = new User()
     user.userId = userId
 
-    const { id: _id, ...rest} = screen
+    const { id: _id, pageComs, ...rest} = screen
     const screenEnt = this.screenRepository.create(rest)
     screenEnt.user = user
+
+    const screenMaterials = pageComs.map(item => {
+      const {sm_id: _sm, id, ...rest} = item
+      rest.m_id = id || rest.m_id
+      const sMaterial = this.screenMaterialRepository.create(rest)
+      return sMaterial
+    })
+
+    screenEnt.pageComs = screenMaterials
 
     const res = await this.screenRepository.save(screenEnt)
     return res
@@ -57,12 +66,13 @@ export default class ScreenService {
 
     const screenMaterials = pageComs.map(item => {
       const {sm_id: _sm, id, ...rest} = item
-      rest.m_id = id;
+      rest.m_id = id || rest.m_id
       const sMaterial = this.screenMaterialRepository.create(rest)
       return sMaterial
     })
 
     screenEnt.pageComs = screenMaterials
+    screenEnt.status = '0'
 
     const res = await this.screenRepository.save(screenEnt)
     try {
@@ -93,7 +103,7 @@ export default class ScreenService {
 
     const screenMaterials = pageComs.map(item => {
       const {sm_id: _sm, id, ...rest} = item
-      rest.m_id = id;
+      rest.m_id = id || rest.m_id
       const sMaterial = this.screenMaterialRepository.create(rest)
       return sMaterial
     })
