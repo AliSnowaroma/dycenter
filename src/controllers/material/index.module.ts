@@ -6,7 +6,7 @@ import { Material } from '@/entities/Material'
 import { User } from '@/entities/User'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Material,  User])],
+  imports: [TypeOrmModule.forFeature([Material, User])],
   controllers: [MaterialController],
   providers: [MaterialService],
 })

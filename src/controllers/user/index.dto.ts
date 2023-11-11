@@ -1,4 +1,3 @@
-
 import { IsNotEmpty, Matches, IsString } from 'class-validator'
 
 // @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{8,16}$/, {

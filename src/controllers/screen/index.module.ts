@@ -6,7 +6,6 @@ import { Screen } from '@/entities/screen'
 import { ScreenMaterial } from '@/entities/screenMaterial'
 import { User } from '@/entities/User'
 
-
 @Module({
   imports: [TypeOrmModule.forFeature([Screen, ScreenMaterial, User])],
   controllers: [ScreenController],

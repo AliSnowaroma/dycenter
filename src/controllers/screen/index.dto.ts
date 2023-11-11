@@ -1,8 +1,13 @@
-
-import { IsNotEmpty, Matches, IsString, IsObject, IsNumber, IsEnum } from 'class-validator'
-import { Type } from 'class-transformer';
+import {
+  IsNotEmpty,
+  Matches,
+  IsString,
+  IsObject,
+  IsNumber,
+  IsEnum,
+} from 'class-validator'
+import { Type } from 'class-transformer'
 import { AddMaterial } from '@/controllers/material/index.dto'
-
 
 export class AddScreen {
   id?: string
@@ -25,15 +30,15 @@ export class AddScreen {
   @IsNumber()
   width: number
 
-  thumb?: any;
+  thumb?: any
 
   @IsNotEmpty({
     message: '是否自适应不能为空',
   })
   @IsString()
-  autoFit: string;
+  autoFit: string
 
-  fitMinWidth?: number;
+  fitMinWidth?: number
 
   @Type(() => AddMaterial)
   pageComs?: AddMaterial[]
@@ -41,12 +46,11 @@ export class AddScreen {
 
 export class QueryId {
   @IsNotEmpty({
-    message: 'id不能为空'
+    message: 'id不能为空',
   })
   @IsString()
   id: string
 }
-
 
 export class UpdateScreen {
   @IsNotEmpty({
@@ -77,9 +81,9 @@ export class UpdateScreen {
     message: '是否自适应不能为空',
   })
   @IsString()
-  autoFit: string;
+  autoFit: string
 
-  fitMinWidth?: number;
+  fitMinWidth?: number
 
   @Type(() => AddMaterial)
   pageComs?: AddMaterial[]

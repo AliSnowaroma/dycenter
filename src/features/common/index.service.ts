@@ -1,17 +1,21 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import  {Transporter, createTransport, SendMailOptions, SentMessageInfo} from 'nodemailer'
+import {
+  Transporter,
+  createTransport,
+  SendMailOptions,
+  SentMessageInfo,
+} from 'nodemailer'
 import { Repository } from 'typeorm'
 // import { Material } from '@/entities/Material'
 import config from '@/config'
-import {createCode} from '@/utils'
+import { createCode } from '@/utils'
 
 @Injectable()
 export default class CommonService {
-  constructor(
-    // @InjectRepository(Material)
-    // private readonly materialRepository: Repository<any>
-  ){}
+  constructor() // @InjectRepository(Material)
+  // private readonly materialRepository: Repository<any>
+  {}
 
   /**
    * @description 注册账号
@@ -19,17 +23,17 @@ export default class CommonService {
    * @returns {Promise<IResUser>}
    * @memberof UserService
    */
-  async sendCode (email: string): Promise<any> {
+  async sendCode(email: string): Promise<any> {
     const { emailConfig } = config
-    let transporter:Transporter = createTransport({
+    let transporter: Transporter = createTransport({
       host: emailConfig.host,
       port: emailConfig.port,
       secure: true, // true for 465, false for other ports
       auth: {
-        user:  emailConfig.user,
+        user: emailConfig.user,
         pass: emailConfig.pass,
-      }
-    });
+      },
+    })
 
     const realCode = createCode()
     let mailOptions: SendMailOptions = {
@@ -105,10 +109,10 @@ export default class CommonService {
       </body>
       </html>
       `, // html body
-    };
+    }
     await transporter.sendMail(mailOptions)
     return {
-      code: realCode
+      code: realCode,
     }
   }
 
@@ -118,17 +122,17 @@ export default class CommonService {
    * @returns {Promise<IResUser>}
    * @memberof UserService
    */
-  async sendPassword (email: string): Promise<any> {
+  async sendPassword(email: string): Promise<any> {
     const { emailConfig } = config
-    let transporter:Transporter = createTransport({
+    let transporter: Transporter = createTransport({
       host: emailConfig.host,
       port: emailConfig.port,
       secure: true, // true for 465, false for other ports
       auth: {
-        user:  emailConfig.user,
+        user: emailConfig.user,
         pass: emailConfig.pass,
-      }
-    });
+      },
+    })
 
     const realCode = createCode()
     let mailOptions: SendMailOptions = {
@@ -204,9 +208,8 @@ export default class CommonService {
         </body>
         </html>
       `, // html body
-    };
+    }
     await transporter.sendMail(mailOptions)
     return realCode
   }
-
 }

@@ -5,57 +5,53 @@ import { User } from '@/entities/User'
 import { hashSync } from 'bcryptjs'
 import CommonService from '@/features/common/index.service'
 
-
 @Injectable()
 export default class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<any>,
-    private readonly commonService: CommonService
-  ){}
+    private readonly commonService: CommonService,
+  ) {}
   /**
    * @description 注册账号
    * @param {T} user
    * @returns {Promise<IResUser>}
    * @memberof UserService
    */
-  async register (user: RegisterSave): Promise<any> {
+  async register(user: RegisterSave): Promise<any> {
     const password = await hashSync(user.password, 10)
     const res = this.userRepository.insert({
       ...user,
-      password
+      password,
     })
     return res
   }
 
-   /**
+  /**
    * @description 查询user, email是否存在
    * @param {QueryUser} user
    * @returns {Promise<any>}
    * @memberof UserService
    */
-  async getUserByUsernameOrEmail (user: QueryUser): Promise<any> {
+  async getUserByUsernameOrEmail(user: QueryUser): Promise<any> {
     const { email, username } = user
-    let queryCondition:QueryUser = {}
+    let queryCondition: QueryUser = {}
 
-    if(email){
-      queryCondition.email=email
-
+    if (email) {
+      queryCondition.email = email
     } else {
-      queryCondition.username=username
+      queryCondition.username = username
     }
     const res = await this.userRepository.findOne({
-      where:queryCondition
+      where: queryCondition,
     })
 
-    if(!res){
+    if (!res) {
       return res
     } else {
       const error = email ? '邮箱已存在' : '用户名已存在'
-      throw new InternalServerErrorException(error);
+      throw new InternalServerErrorException(error)
     }
-
-
   }
 
   /**
@@ -64,21 +60,24 @@ export default class UserService {
    * @returns {Promise<IResUser>}
    * @memberof UserService
    */
-  async resetPassword ({email, password}): Promise<any> {
+  async resetPassword({ email, password }): Promise<any> {
     const res = await this.userRepository.findOne({
-      where:{
-        email
-      }
+      where: {
+        email,
+      },
     })
 
-    if(res){
+    if (res) {
       const hashPassword = await hashSync(password, 10)
-      const upRes = await this.userRepository.update({email},{
-        password: hashPassword
-      })
+      const upRes = await this.userRepository.update(
+        { email },
+        {
+          password: hashPassword,
+        },
+      )
       return upRes
     } else {
-      throw new InternalServerErrorException('邮箱未注册');
+      throw new InternalServerErrorException('邮箱未注册')
     }
   }
 
@@ -88,9 +87,9 @@ export default class UserService {
    * @returns {Promise<IResUser>}
    * @memberof UserService
    */
-  async getUserById (useId: number): Promise<any> {
+  async getUserById(useId: number): Promise<any> {
     const res = await this.userRepository.findOneBy({
-      useId
+      useId,
     })
     return res
   }
@@ -101,21 +100,21 @@ export default class UserService {
    * @return {*}
    * @memberof: UserService
    */
-  async loginByEmail (email: string): Promise<any> {
+  async loginByEmail(email: string): Promise<any> {
     const emailUser = await this.userRepository.findOne({
-      where:{
-        email
-      }
+      where: {
+        email,
+      },
     })
 
-    if(emailUser){
-      const {password:_p, ...rest} = emailUser
+    if (emailUser) {
+      const { password: _p, ...rest } = emailUser
       return rest
     }
     const password = await this.commonService.sendPassword(email)
     const res = await this.register({
-      username:email,
-      password:password,
+      username: email,
+      password: password,
       email,
     })
 

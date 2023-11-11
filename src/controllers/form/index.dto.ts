@@ -1,10 +1,16 @@
-
-import { IsNotEmpty, Matches, IsString, IsObject, IsNumber, IsEnum, IsArray } from 'class-validator'
-import { Type } from 'class-transformer';
+import {
+  IsNotEmpty,
+  Matches,
+  IsString,
+  IsObject,
+  IsNumber,
+  IsEnum,
+  IsArray,
+} from 'class-validator'
+import { Type } from 'class-transformer'
 
 export class AddForm {
-
-  id?: string;
+  id?: string
 
   @IsNotEmpty({
     message: '名称不能为空',
@@ -19,7 +25,6 @@ export class AddForm {
   type: string
 
   structure?: any
-
 }
 
 export class UpdateForm {
@@ -34,7 +39,7 @@ export class UpdateForm {
 
 export class QueryId {
   @IsNotEmpty({
-    message: 'id不能为空'
+    message: 'id不能为空',
   })
   @IsString()
   id: string

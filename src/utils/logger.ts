@@ -47,7 +47,6 @@ const logger: Logger = createLogger({
     format.printf(({ level, message, timestamp }: any) => {
       const msg: any = message
       if (toString.call(msg) === '[object Object]') {
-
         return `${timestamp} [${level}]: code: ${msg.code || 'zero'} msg: ${
           msg.msg
         }\n${msg.track && msg.track.toString()}`

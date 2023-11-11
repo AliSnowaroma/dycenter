@@ -3,7 +3,7 @@
  * @param {any} str
  * @returns {boolean}
  */
-function isString (str: any): boolean {
+function isString(str: any): boolean {
   return toString.call(str) === '[object String]'
 }
 
@@ -12,7 +12,7 @@ function isString (str: any): boolean {
  * @param {any} arr
  * @returns {boolean}
  */
-function isArray (arr: any): boolean {
+function isArray(arr: any): boolean {
   return toString.call(arr) === '[object Array]'
 }
 
@@ -21,7 +21,7 @@ function isArray (arr: any): boolean {
  * @param {any} bool
  * @returns {boolean}
  */
-function isBoolean (bool: any): boolean {
+function isBoolean(bool: any): boolean {
   return toString.call(bool) === '[object Boolean]'
 }
 
@@ -30,7 +30,7 @@ function isBoolean (bool: any): boolean {
  * @param {any} bool
  * @returns {boolean}
  */
-function isUndefined (bool: any): boolean {
+function isUndefined(bool: any): boolean {
   return toString.call(bool) === '[object Undefined]'
 }
 
@@ -39,7 +39,7 @@ function isUndefined (bool: any): boolean {
  * @param {AnyAaaaRecord} bool
  * @returns {boolean}
  */
-function isNull (bool: any): boolean {
+function isNull(bool: any): boolean {
   return toString.call(bool) === '[object Null]'
 }
 
@@ -48,7 +48,7 @@ function isNull (bool: any): boolean {
  * @param {any} num
  * @returns {boolean}
  */
-function isNumber (num: any): boolean {
+function isNumber(num: any): boolean {
   return toString.call(num) === '[object Number]'
 }
 
@@ -57,7 +57,7 @@ function isNumber (num: any): boolean {
  * @param {any} obj
  * @returns {boolean}
  */
-function isObject (obj: any): boolean {
+function isObject(obj: any): boolean {
   return toString.call(obj) === '[object Object]'
 }
 
@@ -66,7 +66,7 @@ function isObject (obj: any): boolean {
  * @param {any} obj
  * @returns {boolean}
  */
-function isEmptyObject (obj: any): boolean {
+function isEmptyObject(obj: any): boolean {
   if (!isObject(obj)) {
     return false
   }
@@ -85,7 +85,7 @@ function isEmptyObject (obj: any): boolean {
  * @param {any} arg
  * @returns {boolean}
  */
-function isFunction (arg: any): boolean {
+function isFunction(arg: any): boolean {
   return toString.call(arg) === '[object Function]'
 }
 
@@ -94,7 +94,7 @@ function isFunction (arg: any): boolean {
  * @param {any} sym
  * @returns {boolean}
  */
-function isSymbol (sym: any): boolean {
+function isSymbol(sym: any): boolean {
   return toString.call(sym) === '[object Symbol]'
 }
 
@@ -103,7 +103,7 @@ function isSymbol (sym: any): boolean {
  * @param {string} phone
  * @returns {boolean}
  */
-function isPhoneNumber (phone: string): boolean {
+function isPhoneNumber(phone: string): boolean {
   return /^1[3456789]\d{9}$/.test(phone)
 }
 

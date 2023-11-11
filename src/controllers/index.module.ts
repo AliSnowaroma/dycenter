@@ -6,19 +6,7 @@ import ScreenModule from '@/controllers/screen/index.module'
 import FormModule from '@/controllers/form/index.module'
 
 @Module({
-  imports: [
-    UserModule,
-    MaterialModule,
-    CommonModule,
-    ScreenModule,
-    FormModule,
-  ],
-  exports: [
-    UserModule,
-    MaterialModule,
-    CommonModule,
-    ScreenModule,
-    FormModule,
-  ]
+  imports: [UserModule, MaterialModule, CommonModule, ScreenModule, FormModule],
+  exports: [UserModule, MaterialModule, CommonModule, ScreenModule, FormModule],
 })
-export default class FeatureModule{}
+export default class FeatureModule {}

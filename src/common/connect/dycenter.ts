@@ -1,5 +1,5 @@
-import { createConnection, Connection } from "typeorm";
-import { Module, DynamicModule } from '@nestjs/common';
+import { createConnection, Connection } from 'typeorm'
+import { Module, DynamicModule } from '@nestjs/common'
 import config from '@/config'
 const { host, port, username, password, database } = config.mysqlConfig
 
@@ -12,7 +12,7 @@ const getconnection = async function () {
     username,
     password,
     database,
-  });
+  })
 
   return connection
 }
@@ -23,23 +23,20 @@ class CustomModule {
     return {
       module: CustomModule,
       providers: [
-          {
-              provide: "Config",
-              useValue: { baseApi: "/api" + options.path }
-          }
+        {
+          provide: 'Config',
+          useValue: { baseApi: '/api' + options.path },
+        },
       ],
       exports: [
-          {
-              provide: "Config",
-              useValue: { baseApi: "/api" + options.path }
-          }
-      ]
+        {
+          provide: 'Config',
+          useValue: { baseApi: '/api' + options.path },
+        },
+      ],
+    }
   }
-  }
-  static forFeature(){
-
-  }
+  static forFeature() {}
 }
-
 
 export default CustomModule

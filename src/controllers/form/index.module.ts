@@ -6,7 +6,7 @@ import { Form } from '@/entities/form'
 import { User } from '@/entities/User'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Form,  User])],
+  imports: [TypeOrmModule.forFeature([Form, User])],
   controllers: [FormController],
   providers: [FormService],
 })

@@ -1,12 +1,10 @@
-import {
-  InternalServerErrorException,
-} from '@nestjs/common'
+import { InternalServerErrorException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { compareSync, hashSync } from 'bcryptjs';
-import { PassportStrategy } from '@nestjs/passport';
-import { IStrategyOptions, Strategy } from 'passport-local';
+import { compareSync, hashSync } from 'bcryptjs'
+import { PassportStrategy } from '@nestjs/passport'
+import { IStrategyOptions, Strategy } from 'passport-local'
 import { Repository } from 'typeorm'
-import { User } from '@/entities/User';
+import { User } from '@/entities/User'
 
 /**
  * 第一个参数: Strategy，你要用的策略，这里是passport-local
@@ -18,45 +16,45 @@ export class LoginStragegy extends PassportStrategy(Strategy, 'login') {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {
-
     super({
       usernameField: 'username',
       passwordField: 'password',
-    } as IStrategyOptions);
+    } as IStrategyOptions)
   }
 
   async validate(username: string, password: string) {
-
     const hashPassword = password
 
     const user = await this.userRepository
       .createQueryBuilder('user')
       .addSelect('user.password')
       .where('user.username=:username', { username })
-      .getOne();
+      .getOne()
 
     if (!user) {
-      const isEmail = /^([a-zA-Z\d])(\w|-)+@[a-zA-Z\d]+\.[a-zA-Z]{2,4}$/.test(username)    // 判断username是不是邮箱
-      if(isEmail){
+      const isEmail = /^([a-zA-Z\d])(\w|-)+@[a-zA-Z\d]+\.[a-zA-Z]{2,4}$/.test(
+        username,
+      ) // 判断username是不是邮箱
+      if (isEmail) {
         const emailUser = await this.userRepository.findOne({
-          where:{
-            email: username
-          }
+          where: {
+            email: username,
+          },
         })
 
-        if(emailUser && compareSync(hashPassword, emailUser.password)){
+        if (emailUser && compareSync(hashPassword, emailUser.password)) {
           return emailUser
         } else {
-          throw new InternalServerErrorException('用户名不正确！');
+          throw new InternalServerErrorException('用户名不正确！')
         }
       }
-      throw new InternalServerErrorException('用户名不正确！');
+      throw new InternalServerErrorException('用户名不正确！')
     }
 
     if (!compareSync(hashPassword, user.password)) {
-      throw new InternalServerErrorException('密码错误！');
+      throw new InternalServerErrorException('密码错误！')
     }
 
-    return user;
+    return user
   }
 }

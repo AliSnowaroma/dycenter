@@ -1,5 +1,12 @@
-import { Controller, Get, UseGuards, Res, InternalServerErrorException, Param} from '@nestjs/common';
-import { AppService } from './app.service';
+import {
+  Controller,
+  Get,
+  UseGuards,
+  Res,
+  InternalServerErrorException,
+  Param,
+} from '@nestjs/common'
+import { AppService } from './app.service'
 import { join } from 'path'
 import * as fs from 'fs'
 
@@ -9,13 +16,13 @@ export class AppController {
 
   @Get('/mapdata.json')
   async getMap() {
-    try{
+    try {
       const url = join(__dirname, '../../../assets/mapdata.json')
       const res = fs.readFileSync(url, 'utf8')
       return {
-        ...JSON.parse(res)
+        ...JSON.parse(res),
       }
-    } catch(err) {
+    } catch (err) {
       console.log(err)
       throw new InternalServerErrorException(err)
     }
@@ -23,13 +30,13 @@ export class AppController {
 
   @Get('/china.json')
   async getChinaData() {
-    try{
+    try {
       const url = join(__dirname, '../../../assets/china.json')
       const res = fs.readFileSync(url, 'utf8')
       return {
-        ...JSON.parse(res)
+        ...JSON.parse(res),
       }
-    } catch(err) {
+    } catch (err) {
       console.log(err)
       throw new InternalServerErrorException(err)
     }
@@ -38,13 +45,13 @@ export class AppController {
   @Get('/map/:code')
   async getMapData(@Param('code') code) {
     console.log(code)
-    try{
+    try {
       const url = join(__dirname, `../../../assets/${code}`)
       const res = fs.readFileSync(url, 'utf8')
       return {
-        ...JSON.parse(res)
+        ...JSON.parse(res),
       }
-    } catch(err) {
+    } catch (err) {
       console.log(err)
       throw new InternalServerErrorException(err)
     }

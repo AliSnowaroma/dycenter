@@ -1,3 +1,1 @@
-export const whiteUserList = [
-31,
-]
+export const whiteUserList = [31]

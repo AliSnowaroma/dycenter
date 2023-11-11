@@ -1,7 +1,12 @@
-
-import { IsNotEmpty, Matches, IsString, IsObject, IsNumber, IsEnum } from 'class-validator'
-import { Type } from 'class-transformer';
-
+import {
+  IsNotEmpty,
+  Matches,
+  IsString,
+  IsObject,
+  IsNumber,
+  IsEnum,
+} from 'class-validator'
+import { Type } from 'class-transformer'
 
 // import { Type } from 'class-transformer';
 // import { IsNumber, IsString, ValidateNested } from 'class-validator';
@@ -24,22 +29,21 @@ import { Type } from 'class-transformer';
 // }
 
 enum OriginEnum {
-  '本地'='0',
-  '远程'='1'
+  '本地' = '0',
+  '远程' = '1',
 }
 
 class DataValues {
   @IsEnum(OriginEnum)
-  isOrigin: OriginEnum;
+  isOrigin: OriginEnum
 }
 
 export class AddMaterial {
+  m_id?: string
 
-  m_id?: string;
+  sm_id?: string
 
-  sm_id?: string;
-
-  id?: string;
+  id?: string
 
   @IsNotEmpty({
     message: '名称不能为空',
@@ -86,16 +90,15 @@ export class AddMaterial {
 
 export class QueryId {
   @IsNotEmpty({
-    message: 'id不能为空'
+    message: 'id不能为空',
   })
   @IsString()
   id: string
 }
 
 export class PublishMaterial {
-
   @IsNotEmpty({
-    message: '组件id不能为空'
+    message: '组件id不能为空',
   })
   @IsString()
   id: string
@@ -104,11 +107,11 @@ export class PublishMaterial {
     message: '代码不能为空',
   })
   @IsObject({
-    message: 'code是对象'
+    message: 'code是对象',
   })
   code: {
-    js: string,
-    css: string,
+    js: string
+    css: string
   }
 
   panel: DyObj

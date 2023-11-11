@@ -10,14 +10,14 @@ const { host, port, password } = config.redis
 const client: any = Redis.createClient({
   url: `redis://:${password}@${host}:${port}`,
   // legacyMode: true 4.0版本之前的api，加上之后，新的api不生效
-});
+})
 
-async function setRedis (key: string, value: any, ex?: number) {
+async function setRedis(key: string, value: any, ex?: number) {
   if (!uType.isNull(value) && !uType.isUndefined(value)) {
     const newValue: string = JSON.stringify(value)
-    if(ex){
+    if (ex) {
       return await client.set(`${C_REDIS.REDIS_PREFIX_KEY}${key}`, newValue, {
-        'EX': ex
+        EX: ex,
       })
     } else {
       return await client.set(`${C_REDIS.REDIS_PREFIX_KEY}${key}`, newValue)
@@ -25,8 +25,8 @@ async function setRedis (key: string, value: any, ex?: number) {
   }
 }
 
-async function getRedisSync (key: string): Promise<any> {
-  try{
+async function getRedisSync(key: string): Promise<any> {
+  try {
     const res = await client.get(`${C_REDIS.REDIS_PREFIX_KEY}${key}`)
     if (!uType.isNull(res) && !uType.isUndefined(res)) {
       const newRes: any = JSON.parse(res)
@@ -34,17 +34,17 @@ async function getRedisSync (key: string): Promise<any> {
     } else {
       return null
     }
-  } catch(error){
+  } catch (error) {
     uLogger.logger.error({ ...C_ERROR.REDIS_GET, track: error })
     return null
   }
 }
 
-async function delRedis (key: string): Promise<void> {
+async function delRedis(key: string): Promise<void> {
   await client.del(`${C_REDIS.REDIS_PREFIX_KEY}${key}`)
 }
 
-async function setnx (key: string, expiryDate?: number): Promise<any> {
+async function setnx(key: string, expiryDate?: number): Promise<any> {
   return new Promise(function (resolve: any): void {
     client.setnx(key, true, function (error: any, res: any) {
       if (error) {

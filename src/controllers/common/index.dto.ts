@@ -1,6 +1,12 @@
-
-import { IsNotEmpty, Matches, IsString, IsObject, IsNumber, IsEnum } from 'class-validator'
-import { Type } from 'class-transformer';
+import {
+  IsNotEmpty,
+  Matches,
+  IsString,
+  IsObject,
+  IsNumber,
+  IsEnum,
+} from 'class-validator'
+import { Type } from 'class-transformer'
 
 export class GetCode {
   @IsNotEmpty({

@@ -11,7 +11,7 @@ import { uLogger } from '@/utils'
 
 @Catch(HttpException)
 export class HttpErrorFilter implements ExceptionFilter {
-  catch (exception: HttpException| any, host: ArgumentsHost): void {
+  catch(exception: HttpException | any, host: ArgumentsHost): void {
     let error: IDataResponse
     const ctx: any = host.switchToHttp()
     const response: any = ctx.getResponse()
@@ -25,14 +25,14 @@ export class HttpErrorFilter implements ExceptionFilter {
     const defaultStatus = highStatus || status
 
     if (defaultStatus === HttpStatus.BAD_REQUEST) {
-      const exceptionResponse: any = exception.getResponse();
-      let validMessage = '';
+      const exceptionResponse: any = exception.getResponse()
+      let validMessage = ''
 
       if (typeof exceptionResponse === 'object') {
         validMessage =
           typeof exceptionResponse.message === 'string'
             ? exceptionResponse.message
-            : exceptionResponse.message[0];
+            : exceptionResponse.message[0]
       }
       error = {
         success: false,
@@ -54,8 +54,8 @@ export class HttpErrorFilter implements ExceptionFilter {
         }
       } else {
         const message = exception.message
-        ? exception.message
-        : `${defaultStatus >= 500 ? 'Service Error' : 'Client Error'}`;
+          ? exception.message
+          : `${defaultStatus >= 500 ? 'Service Error' : 'Client Error'}`
 
         uLogger.logger.error({
           code: `${defaultStatus}`,
