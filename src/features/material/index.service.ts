@@ -22,10 +22,11 @@ export default class MaterialService {
     if (queryRes.length >= 10 && !whiteUserList.includes(userId)) {
       throw new InternalServerErrorException('普通会员最多添加10条')
     }
-    let { panel, code, dataValues, ...rest } = comInfo
+    const { panel, code, dataValues = {}, ...rest } = comInfo
     const data = {
       ...rest,
       dataValues: {
+        ...dataValues,
         isOrigin: '0',
       },
       code: code
